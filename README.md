@@ -263,7 +263,7 @@ python -m PyInstaller --clean --onefile --windowed --icon=assets/icons/uav_gcs.i
 
 This project is licensed under the MIT License.
 
-See the  [UAV_GCS/LICENSE](UAV_GCS/LICENSE) file for details.
+See the  [LICENSE](UAV_GCS/License) file for details.
 
 ---
 
