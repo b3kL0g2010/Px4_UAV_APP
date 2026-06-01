@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8">
+
+<title>Drone Viewer</title>
+
+<style>
+
+html, body {
+
+    margin: 0;
+    padding: 0;
+
+    overflow: hidden;
+
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+    135deg,
+    #5a6972,
+    #6b96ad
+);
+}
+
+#banner {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-image:
+        url("../../../../assets/images/drone_banner.png");
+
+    background-repeat: no-repeat;
+
+    background-position: top center;
+
+    background-size: contain;
+
+    opacity: 1;
+
+    filter: brightness(0.85);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+canvas {
+
+    display: block;
+
+    position: relative;
+
+    z-index: 1;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- Set Bacgkground Dimmer and a Banner Image -->
+<div id="banner"></div>
+
+<!-- ================================= -->
+<!-- THREE.JS -->
+<!-- ================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+
+<!-- ================================= -->
+<!-- ORBIT CONTROLS -->
+<!-- ================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<!-- ================================= -->
+<!-- GLTF LOADER -->
+<!-- ================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+
+
+<script>
+
+
+//
+// =====================================
+// SCENE - The 3D World Container
+// =====================================
+//
+const scene = new THREE.Scene();
+
+//
+// =====================================
+// CAMERA
+// =====================================
+//
+
+const camera = new THREE.PerspectiveCamera(
+
+    45,
+
+    window.innerWidth / window.innerHeight,
+
+    0.1,
+
+    1000
+);
+
+camera.position.set(
+
+    0, // left or right
+    5, // up or down
+    12 // forward or backward
+);
+
+
+//
+// =====================================
+// RENDERER
+// =====================================
+//
+
+const renderer = new THREE.WebGLRenderer({
+
+    antialias: true,
+    alpha: true
+});
+
+renderer.setSize(
+
+    window.innerWidth,
+    window.innerHeight
+);
+
+renderer.setPixelRatio(
+
+    window.devicePixelRatio
+);
+
+document.body.appendChild(
+
+    renderer.domElement
+);
+
+//
+// =====================================
+// LIGHTS
+// =====================================
+//
+
+const ambient = new THREE.AmbientLight(
+
+    0xffffff,
+    2
+);
+
+scene.add(ambient);
+
+
+const directional = new THREE.DirectionalLight(
+
+    0xffffff,
+    3
+);
+
+directional.position.set(
+
+    5,
+    10,
+    7
+);
+
+scene.add(directional);
+
+
+
+//
+// =====================================
+// CONTROLS
+// =====================================
+//
+
+const controls = new THREE.OrbitControls(
+
+    camera,
+    renderer.domElement
+);
+
+controls.enableDamping = true;
+
+controls.autoRotate = true;
+
+controls.autoRotateSpeed = 1.0;
+
+controls.enableZoom = false;
+
+controls.enablePan = false;
+
+//This prevents upside-down drone viewing.
+controls.minPolarAngle = Math.PI / 3;
+controls.maxPolarAngle = Math.PI / 1.8;
+
+//
+// =====================================
+// MODEL LOADER
+// =====================================
+//
+
+const loader = new THREE.GLTFLoader();
+
+loader.load(
+
+    "../models/drone.glb",
+
+    function(gltf){
+
+        const model = gltf.scene;
+
+        scene.add(model);
+
+        model.scale.set(
+
+            1.5,
+            1.5,
+            1.5
+        );
+
+        model.position.set(
+
+            0,
+            -0.3,
+            0
+        );
+    },
+
+    undefined,
+
+    function(error){
+
+        console.error(
+            "GLB LOAD ERROR:",
+            error
+        );
+    }
+);
+
+
+//
+// =====================================
+// ANIMATION LOOP
+// =====================================
+//
+
+function animate(){
+
+    requestAnimationFrame(
+        animate
+    );
+
+    controls.update();
+
+    renderer.render(
+
+        scene,
+        camera
+    );
+}
+
+animate();
+
+
+//
+// =====================================
+// RESIZE
+// =====================================
+//
+
+window.addEventListener(
+
+    "resize",
+
+    () => {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+
+            window.innerWidth,
+            window.innerHeight
+        );
+    }
+);
+
+</script>
+
+</body>
+
+</html>

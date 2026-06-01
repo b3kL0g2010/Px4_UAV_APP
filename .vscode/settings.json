@@ -1,0 +1,5 @@
+{
+    "python-envs.defaultEnvManager": "ms-python.python:conda",
+    "python-envs.defaultPackageManager": "ms-python.python:conda",
+    "cmake.sourceDirectory": "D:/Dasig/PPTI/My_APP/PX4_INJECTION_v3/UAV_GCS/cpp"
+}

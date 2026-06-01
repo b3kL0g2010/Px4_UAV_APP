@@ -1,0 +1,37 @@
+# Python
+
+**pycache**/
+*.pyc
+*.pyo
+*.pyd
+
+# Conda
+
+.env
+.venv
+venv/
+env/
+
+# PyInstaller
+
+build/
+dist/
+*.spec
+
+# VSCode
+
+.vscode/
+
+# Logs
+
+*.log
+
+# Generated Maps
+
+flight_map.html
+image_review_map.html
+
+# OS Files
+
+Thumbs.db
+.DS_Store
