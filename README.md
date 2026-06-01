@@ -27,13 +27,13 @@ The application is designed to assist drone operators, survey teams, mapping pro
 
 ## PX4 GeoTagger
 
-![PX4 GeoTagger](screenshots/px4_geotagger.png)
+![PX4 GeoTagger](docs/images/px4_geotagger.png)
 
 ---
 
 ## Image Flight Review
 
-![Image Flight Review](screenshots/image_flight_review.png)
+![Image Flight Review](docs/images/image_flight_review.png)
 
 ### PX4 GeoTagger Module
 
