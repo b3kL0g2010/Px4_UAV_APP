@@ -79,7 +79,7 @@ class MissionDetector:
         # -------------------------------------------------
         # SEARCH FOR EXECUTING MISSION MESSAGE
         # -------------------------------------------------
-
+        boot_timestamp = None
         mission_log = None
 
         for log in logs:
@@ -121,47 +121,35 @@ class MissionDetector:
                 "vehicle_status nav_state."
             )
 
-            try:
-
-                vehicle_status = ulog.get_dataset(
-                    "vehicle_status"
-                ).data
-
-            except Exception:
-
-                raise RuntimeError(
-                    "vehicle_status topic not found."
-                )
+            vehicle_status = ulog.get_dataset(
+                "vehicle_status"
+            ).data
 
             status_df = pd.DataFrame(
                 vehicle_status
             )
 
+            mission_rows = status_df[
 
-            print(
-                "[NAV STATES AVAILABLE]"
-            )
+                status_df["nav_state"] == 4
 
-            print(
-                sorted(
-                    status_df["nav_state"]
-                    .unique()
-                    .tolist()
+            ]
+
+            if mission_rows.empty:
+
+                raise RuntimeError(
+                    "Mission Flight mode not found.",
+                    "Flight Log is not  used for geotagging."
                 )
-            )
-            print(
-                status_df[
-                    ["timestamp", "nav_state"]
-                ].head(50)
-            )
+            
 
+            boot_timestamp = int(
 
+                mission_rows.iloc[0]["timestamp"]
+
+            )
 
         else:
-
-            # ---------------------------------------------
-            # PX4 BOOT-RELATIVE TIMESTAMP
-            # ---------------------------------------------
 
             boot_timestamp = int(
                 mission_log.timestamp
